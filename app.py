@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+
 
 
 app = Flask(__name__)
@@ -25,15 +26,20 @@ def index4():
 
 #----------practice end-------------- 
 #----------post-------------- 
-@app.route('/model')
+@app.route('/model', methods=['GET', 'POST'])
 def get_form():
-    return render_template('model.html', page_header="Form")
-@app.route('/form_result', methods=['POST']) # default methods is "GET"
-def form_result():
-    data = [["method:", request.method],
-            ["base_url:", request.base_url],
-            ["form data:", request.form]]
-    return render_template('model.html', page_header="Form data", data=data)
+    if request.method == "GET":
+        return render_template('model.html', page_header="Form")
+    elif request.method == "POST":# 以post的形式傳出去
+        print(f'method:{request.values["parking"]}')
+        return render_template('model.html', page_header="Form")
+# @app.route('/form_result', methods=['POST']) # default methods is "GET"
+# def form_result():
+#     data = [["method:", request.method],
+#             ["base_url:", request.base_url],
+#             ["form data:", request.form]]
+#     print(request.parking)
+#     return render_template('model.html', page_header="Form data", data=data)
 
 
 #----------post-------------- 
