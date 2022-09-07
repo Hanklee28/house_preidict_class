@@ -58,9 +58,9 @@
         </div>
     </header>
     <!-- Main Content-->
-    <div>
+    <div style="width: 500x; height: 300px;">
         <div>
-            <canvas id="barChart"></canvas>
+            <canvas style="width: 500x; height: 300px;" id="barChart"></canvas>
         </div>
         <script>
             const bar_labels = [
@@ -102,7 +102,56 @@
         </script>
     </div>
 
-    <div>
+    <div style="width: 500px; height: 300px;">
+        <div>
+            <canvas id="line_accuracy_Chart"></canvas>
+        </div>
+        <script>
+            const line_accuracy_labels = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+            ];
+
+            const line_accuracy_data = {
+                labels: line_accuracy_labels,
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                }]
+            };
+
+            const line_accuracy_config = {
+                type: 'line',
+                data: line_accuracy_data,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                },
+            };
+
+        </script>
+        <script>
+            const line_accuracy_Chart = new Chart(
+                document.getElementById('line_accuracy_Chart'),
+                line_accuracy_config
+            );
+        </script>
+    </div>
+
+
+
+
+
+    <div style="width: 500px; height: 300px;">
         <div>
             <canvas id="radarChart"></canvas>
         </div>
@@ -147,8 +196,99 @@
         </script>
     </div>
 
+    <div style="width: 500px; height: 300px;">
+        <div>
+            <canvas id="line_history_Chart"></canvas>
+        </div>
+        <script>
+            const line_history_labels = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+            ];
+
+            const line_history_data = {
+                labels: line_history_labels,
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                }]
+            };
+
+            const line_history_config = {
+                type: 'line',
+                data: radar_data,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                },
+            };
+
+        </script>
+        <script>
+            const line_history_Chart = new Chart(
+                document.getElementById('line_history_Chart'),
+                line_history_config
+            );
+        </script>
+    </div>
 
 
+    <div style="width: 500px; height: 300px;">
+        <div>
+            <canvas id="doughnutChart"></canvas>
+        </div>
+        <script>
+            const doughnut_labels = [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+            ];
+
+            const doughnut_data = {
+                labels: radar_labels,
+                datasets: [{
+                    label: 'My First dataset',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                }]
+            };
+
+            const doughnut_config = {
+                type: 'doughnut',
+                data: doughnut_data,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                },
+            };
+
+        </script>
+        <script>
+            const doughnutChart = new Chart(
+                document.getElementById('doughnutChart'),
+                doughnut_config
+            );
+        </script>
+    </div>
+
+
+  
 
 
     <!-- Footer-->
