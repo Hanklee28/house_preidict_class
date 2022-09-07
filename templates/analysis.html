@@ -22,6 +22,32 @@
         rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../static/styles.css" rel="stylesheet" />
+
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .chart-container {
+            width: 500px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    
+
+
+
+
+    </style>
+
+
 </head>
 
 <body>
@@ -58,239 +84,219 @@
         </div>
     </header>
     <!-- Main Content-->
-    <div style="width: 500x; height: 300px;">
-        <div>
-            <canvas style="width: 500x; height: 300px;" id="barChart"></canvas>
-        </div>
-        <script>
-            const bar_labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-            ];
 
-            const bar_data = {
-                labels: bar_labels,
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            };
 
-            const bar_config = {
-                type: 'bar',
-                data: bar_data,
-                options: {
-                    // scales: {
-                    //     y: {
-                    //         beginAtZero: true
-                    //     }
+    <div class="container">
+        <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+            <canvas id="barChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+            <script>
+                const bar_labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+    
+                const bar_data = {
+                    labels: bar_labels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                };
+    
+                const bar_config = {
+                    type: 'bar',
+                    data: bar_data,
+                    options: {
+                        // scales: {
+                        //     y: {
+                        //         beginAtZero: true
+                        //     }
+                    }
                 }
-            }
-
-        </script>
-        <script>
-            const barChart = new Chart(
-                document.getElementById('barChart'),
-                bar_config
-            );
-        </script>
-    </div>
-
-    <div style="width: 500px; height: 300px;">
-        <div>
-            <canvas id="line_accuracy_Chart"></canvas>
+            </script>
+            <script>
+                const barChart = new Chart(
+                    document.getElementById('barChart'),
+                    bar_config
+                );
+            </script>
         </div>
-        <script>
-            const line_accuracy_labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-            ];
-
-            const line_accuracy_data = {
-                labels: line_accuracy_labels,
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            };
-
-            const line_accuracy_config = {
-                type: 'line',
-                data: line_accuracy_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
+        <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+            <canvas id="line_accuracy_Chart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+            <script>
+                const line_accuracy_labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+    
+                const line_accuracy_data = {
+                    labels: line_accuracy_labels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                };
+    
+                const line_accuracy_config = {
+                    type: 'line',
+                    data: line_accuracy_data,
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
                         }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const line_accuracy_Chart = new Chart(
-                document.getElementById('line_accuracy_Chart'),
-                line_accuracy_config
-            );
-        </script>
-    </div>
-
-
-
-
-
-    <div style="width: 500px; height: 300px;">
-        <div>
-            <canvas id="radarChart"></canvas>
+                    },
+                };
+    
+            </script>
+            <script>
+                const line_accuracy_Chart = new Chart(
+                    document.getElementById('line_accuracy_Chart'),
+                    line_accuracy_config
+                );
+            </script>
         </div>
-        <script>
-            const radar_labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-            ];
-
-            const radar_data = {
-                labels: radar_labels,
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            };
-
-            const radar_config = {
-                type: 'radar',
-                data: radar_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
+        <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+            <canvas id="radarChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+            <script>
+                const radar_labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+    
+                const radar_data = {
+                    labels: radar_labels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                };
+    
+                const radar_config = {
+                    type: 'radar',
+                    data: radar_data,
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
                         }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const radarChart = new Chart(
-                document.getElementById('radarChart'),
-                radar_config
-            );
-        </script>
-    </div>
-
-    <div style="width: 500px; height: 300px;">
-        <div>
-            <canvas id="line_history_Chart"></canvas>
+                    },
+                };
+    
+            </script>
+            <script>
+                const radarChart = new Chart(
+                    document.getElementById('radarChart'),
+                    radar_config
+                );
+            </script>
         </div>
-        <script>
-            const line_history_labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-            ];
-
-            const line_history_data = {
-                labels: line_history_labels,
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            };
-
-            const line_history_config = {
-                type: 'line',
-                data: radar_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
+        <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+            <canvas id="line_history_Chart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+            <script>
+                const line_history_labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+    
+                const line_history_data = {
+                    labels: line_history_labels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                };
+    
+                const line_history_config = {
+                    type: 'line',
+                    data: radar_data,
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
                         }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const line_history_Chart = new Chart(
-                document.getElementById('line_history_Chart'),
-                line_history_config
-            );
-        </script>
-    </div>
-
-
-    <div style="width: 500px; height: 300px;">
-        <div>
-            <canvas id="doughnutChart"></canvas>
+                    },
+                };
+    
+            </script>
+            <script>
+                const line_history_Chart = new Chart(
+                    document.getElementById('line_history_Chart'),
+                    line_history_config
+                );
+            </script>
         </div>
-        <script>
-            const doughnut_labels = [
-                'January',
-                'February',
-                'March',
-                'April',
-                'May',
-                'June',
-            ];
-
-            const doughnut_data = {
-                labels: radar_labels,
-                datasets: [{
-                    label: 'My First dataset',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }]
-            };
-
-            const doughnut_config = {
-                type: 'doughnut',
-                data: doughnut_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
+        <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+            <canvas id="doughnutChart"width="1000" height="500" style="display: block; height: 250px; width: 500px;"></canvas>
+            <script>
+                const doughnut_labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+    
+                const doughnut_data = {
+                    labels: radar_labels,
+                    datasets: [{
+                        label: 'My First dataset',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: [0, 10, 5, 2, 20, 30, 45],
+                    }]
+                };
+    
+                const doughnut_config = {
+                    type: 'doughnut',
+                    data: doughnut_data,
+                    options: {
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
                         }
-                    }
-                },
-            };
+                    },
+                };
+    
+            </script>
+            <script>
+                const doughnutChart = new Chart(
+                    document.getElementById('doughnutChart'),
+                    doughnut_config
+                );
+            </script>   
 
-        </script>
-        <script>
-            const doughnutChart = new Chart(
-                document.getElementById('doughnutChart'),
-                doughnut_config
-            );
-        </script>
+        </div>
     </div>
-
-
-  
-
-
     <!-- Footer-->
     <footer class="border-top" width="50" heght="50">
         <div class="container px-4 px-lg-5">
