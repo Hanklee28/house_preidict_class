@@ -1,5 +1,8 @@
 from flask import Flask, render_template, request
-
+from layer.data_preprocessing import HouseObject
+import pandas as pd
+import geopandas as gpd
+import numpy as np
 
 
 app = Flask(__name__)
@@ -31,7 +34,22 @@ def get_form():
     if request.method == "GET":
         return render_template('model.html', page_header="Form")
     elif request.method == "POST":# 以post的形式傳出去
-        print(f'method:{request.values["parking"]}')
+        print(f'req_value:{request.values}')
+
+        address = request.values['county'] + \
+                  request.values['district'] + \
+                  request.values['street']
+        
+        house = HouseObject(address)
+        # User輸入地址的經緯度
+        house_lon, house_lat = house.get_current_location()
+        print(house_lon, house_lat)
+        house.create_buffer()
+        
+
+        
+        #print(lon, lat)
+
         return render_template('model.html', page_header="Form")
 # @app.route('/form_result', methods=['POST']) # default methods is "GET"
 # def form_result():
