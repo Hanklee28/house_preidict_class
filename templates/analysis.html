@@ -91,21 +91,37 @@
             <canvas id="barChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
             <script>
                 const bar_labels = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    '交通運輸設施',
+                    '醫療設施',
+                    '速食店',
+                    '文教機構',
+                    '宮廟',
+                    '公園',
                 ];
     
                 const bar_data = {
                     labels: bar_labels,
                     datasets: [{
-                        label: 'My First dataset',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        label: '周邊設施',
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            ],
+                        borderWidth: 1,
+                        data: [15, 10, 5, 2, 20, 30,],
+                        
                     }]
                 };
     
@@ -131,21 +147,23 @@
             <canvas id="line_accuracy_Chart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
             <script>
                 const line_accuracy_labels = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    '-3',
+                    '-2',
+                    '0',
+                    '1',
+                    '2',
+                    '3',
                 ];
     
                 const line_accuracy_data = {
                     labels: line_accuracy_labels,
                     datasets: [{
-                        label: 'My First dataset',
+                        label: '模型準確度',
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        data: [0, 2, 15, 0, 20, 30, 45, 30, 20, 15, 5, 0],
+                        tension: 0.1  
+                        //tension 線圖張力
                     }]
                 };
     
@@ -173,23 +191,38 @@
             <canvas id="radarChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
             <script>
                 const radar_labels = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    '醫療設施',
+                    '經濟指標',
+                    '教育資源',
+                    '公共安全',
+                    '自然環境',
+                    '交通運輸',
                 ];
     
                 const radar_data = {
                     labels: radar_labels,
                     datasets: [{
-                        label: 'My First dataset',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
-                    }]
-                };
+                            label: '該位置總和指標',
+                            data: [65, 59, 90, 81, 56, 55],
+                            fill: true,
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgb(255, 99, 132)',
+                            pointBackgroundColor: 'rgb(255, 99, 132)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(255, 99, 132)'
+                        }, {
+                            label: '該區域綜合指標',
+                            data: [28, 48, 40, 19, 96, 27],
+                            fill: true,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgb(54, 162, 235)',
+                            pointBackgroundColor: 'rgb(54, 162, 235)',
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: 'rgb(54, 162, 235)'
+                        }]
+                        };
     
                 const radar_config = {
                     type: 'radar',
@@ -214,28 +247,39 @@
         <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
             <canvas id="line_history_Chart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
             <script>
+                const inputs = {
+                        min: 0,
+                        max: 100,
+                        count: 10,
+                        decimals: 2,
+                        continuity: 1
+                        };
                 const line_history_labels = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    '101年',
+                    '102年',
+                    '103年',
+                    '104年',
+                    '105年',
+                    '106年',
+                    '107年',
+                    '108年',
+                    '109年',
+                    '110年',
                 ];
     
                 const line_history_data = {
                     labels: line_history_labels,
                     datasets: [{
-                        label: 'My First dataset',
+                        label: '該位置歷史成交價格',
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        data: [0, 10, 5, 2, 20, 30, 45, 0, 0, 15],
                     }]
                 };
     
                 const line_history_config = {
                     type: 'line',
-                    data: radar_data,
+                    data: line_history_data,
                     options: {
                         elements: {
                             line: {
@@ -257,21 +301,25 @@
             <canvas id="doughnutChart"width="1000" height="500" style="display: block; height: 250px; width: 500px;"></canvas>
             <script>
                 const doughnut_labels = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
+                    '高中含以下',
+                    '學士',
+                    '碩士/博士',
                 ];
     
                 const doughnut_data = {
-                    labels: radar_labels,
+                    labels: doughnut_labels,
                     datasets: [{
-                        label: 'My First dataset',
-                        backgroundColor: 'rgb(255, 99, 132)',
-                        borderColor: 'rgb(255, 99, 132)',
-                        data: [0, 10, 5, 2, 20, 30, 45],
+                        label: [
+                            '高中含以下',
+                            '學士',
+                            '碩士/博士',
+                        ],
+                        backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                        ],
+                        data: [20, 70, 10],
                     }]
                 };
     
