@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from layer.data_preprocessing import HouseObject
+from model.house_price_MLP import HousePriceModel
 import pandas as pd
 import geopandas as gpd
 import numpy as np
@@ -34,7 +35,57 @@ def get_form():
     if request.method == "GET":
         return render_template('model.html', page_header="Form")
     elif request.method == "POST":# 以post的形式傳出去
-        #print(f'req_value:{request.values}')
+        print(f'req_value:{request.values}')
+        d1 = {
+            '交易標的':[int(request.values['target'])],
+            '建物現況格局-房':[int(request.values['bedroom'])],
+            '建物現況格局-廳':[int(request.values['livingroom'])],
+            '建物現況格局-衛':[int(request.values['bathroom'])],
+            '有無管理組織':[int(request.values['manage_org'])],
+            '主建物面積':[int(request.values['main_area'])],
+            '附屬建物面積':[int(request.values['sub_area'])],
+            '陽台面積':[int(request.values['balcony'])],
+            '電梯':[int(request.values['elevator'])],
+            '屋齡':[int(request.values['age'])],
+            '交易年份':[111],
+            'floor':[int(request.values['floor'])],
+            'total_floor':[int(request.values['total_floor'])],
+            '車位類別_一樓平面':[0],
+            '車位類別_其他':[0],
+            '車位類別_升降平面':[0],
+            '車位類別_升降機械':[0],
+            '車位類別_坡道平面':[0],
+            '車位類別_坡道機械':[0],
+            '車位類別_塔式車位':[0],
+            '建物型態-公寓':[0],
+            '建物型態-華廈':[0],
+            '建物型態-住宅大樓':[0],
+            '建物型態-套房':[0]
+        }
+        df = pd.DataFrame(data=d1)
+        if request.values['parking'] == '1':
+            df['車位類別_一樓平面'] = 1
+        elif request.values['parking'] == '2':
+            df['車位類別_升降平面'] = 1
+        elif request.values['parking'] == '3':
+            df['車位類別_升降機械'] = 1
+        elif request.values['parking'] == '4':
+            df['車位類別_坡道平面'] = 1
+        elif request.values['parking'] == '5':
+            df['車位類別_坡道機械'] = 1
+        elif request.values['parking'] == '6':
+            df['車位類別_塔式車位'] = 1
+        elif request.values['parking'] == '7':
+            df['車位類別_其他'] = 1
+
+        if request.values['type'] == '1':
+            df['建物型態-公寓'] = 1
+        elif request.values['type'] == '2':
+            df['建物型態-華廈'] = 1
+        elif request.values['type'] == '3':
+            df['建物型態-住宅大樓'] = 1
+        elif request.values['type'] == '4':
+            df['建物型態-套房'] = 1
 
         address = request.values['county'] + \
                   request.values['district'] + \
@@ -58,18 +109,79 @@ def get_form():
 
         # 經濟指標
         target_layer = gpd.read_file('./layer/economic_indicators/conveniencestore.geojson', encoding = 'utf-8')
-        conveniencestore = house.sjoin_point_layer(target_layer, 'conveniencestore', '分公司名稱', 'count')
+        conveniencestore = house.sjoin_point_layer(target_layer, 'conveniencestore_count', '分公司名稱', 'count')
         target_layer = gpd.read_file('./layer/economic_indicators/fastfood.geojson', encoding = 'utf-8')
-        fastfood = house.overlay_polygon_layer(target_layer, 'fastfood', 'full_id', 'count')
-        print(fastfood)
+        fastfood = house.overlay_polygon_layer(target_layer, 'fastfood_count', 'full_id', 'count')
 
         # 文教機構
-        # target_layer = gpd.read_file('./layer/educational_resources/library.geojson', encoding = 'utf-8')
-        # library = house.overlay_polygon_layer(target_layer, 'library', 'full_id', 'count')
+        target_layer = gpd.read_file('./layer/educational_resources/library.geojson', encoding = 'utf-8')
+        library = house.overlay_polygon_layer(target_layer, 'library_count', 'full_id', 'count')
+        target_layer = gpd.read_file('./layer/educational_resources/school.geojson', encoding = 'utf-8')
+        school = house.overlay_polygon_layer(target_layer, 'near_school', 'full_id', 'near')
+        target_layer = gpd.read_file('./layer/educational_resources/university.geojson', encoding = 'utf-8')
+        university = house.overlay_polygon_layer(target_layer, 'near_university', 'full_id', 'near')
 
+        # 公共安全
+        target_layer = gpd.read_file('./layer/public_safety/firestation.geojson', encoding = 'utf-8')
+        firestation = house.sjoin_point_layer(target_layer, 'near_firestation', '消防隊名稱', 'near')
+        target_layer = gpd.read_file('./layer/public_safety/fuel.geojson', encoding = 'utf-8')
+        fuel = house.overlay_polygon_layer(target_layer, 'fuel_count', 'full_id', 'count')
+        target_layer = gpd.read_file('./layer/public_safety/market.geojson', encoding = 'utf-8')
+        market = house.overlay_polygon_layer(target_layer, 'market_count', 'full_id', 'count')
+        target_layer = gpd.read_file('./layer/public_safety/police.geojson', encoding = 'utf-8')
+        police = house.sjoin_point_layer(target_layer, 'near_police', '中文單位名稱', 'near')
+        target_layer = gpd.read_file('./layer/public_safety/placeofworkship.geojson', encoding = 'utf-8')
+        placeofworkship = house.overlay_polygon_layer(target_layer, 'placeofworkship_count', 'full_id', 'count')
+
+        # 自然環境
+        target_layer = gpd.read_file('./layer/natural_environment/cemetery.geojson', encoding = 'utf-8')
+        cemetery = house.overlay_polygon_layer(target_layer, 'cemetery_area', 'full_id', 'area')
+        target_layer = gpd.read_file('./layer/natural_environment/park.geojson', encoding = 'utf-8')
+        park = house.overlay_polygon_layer(target_layer, 'park_area', 'full_id', 'area')
+        target_layer = gpd.read_file('./layer/natural_environment/river_TW.geojson', encoding = 'utf-8')
+        river_TW = house.overlay_polygon_layer(target_layer, 'river_TW_area', 'full_id', 'area')
+
+        # 交通運輸
+        target_layer = gpd.read_file('./layer/transportation/parking.geojson', encoding = 'utf-8')
+        parking = house.overlay_polygon_layer(target_layer, 'parking_area', 'full_id', 'area')
+        target_layer = gpd.read_file('./layer/transportation/busstop.geojson', encoding = 'utf-8')
+        busstop = house.sjoin_point_layer(target_layer, 'busstop_count', 'full_id', 'count')
+        target_layer = gpd.read_file('./layer/transportation/LRT.geojson', encoding = 'utf-8')
+        LRT = house.sjoin_point_layer(target_layer, 'near_LRT', 'MARKID', 'near')
+        target_layer = gpd.read_file('./layer/transportation/MRT.geojson', encoding = 'utf-8')
+        MRT = house.sjoin_point_layer(target_layer, 'near_MRT', 'MARKID', 'near')
+        target_layer = gpd.read_file('./layer/transportation/TRA.geojson', encoding = 'utf-8')
+        TRA = house.sjoin_point_layer(target_layer, 'near_TRA', 'MARKID', 'near')
 
         result = house.return_geo_dataframe()
-        result.to_csv('codeCheckFile.csv')
+        result = df.join(result)
+
+        if request.values['county'] == '台北市':
+            d2 = {
+                '中山區':[0],
+                '中正區':[0],
+                '信義區':[0],
+                '內湖區':[0],
+                '北投區':[0],
+                '南港區':[0],
+                '士林區':[0],
+                '大同區':[0],
+                '大安區':[0],
+                '文山區':[0],
+                '松山區':[0],
+                '萬華區':[0]
+            }
+            df2 = pd.DataFrame(data=d2)
+            df2[request.values['district']] = 1
+            result.drop(['idx','lon','lat','geometry','near_LRT_250','near_LRT_500','near_LRT_750'],axis=1,inplace=True)
+            result = result.join(df2)
+            lst = result.values.tolist()
+            print(lst[0])
+
+            TPE_model = HousePriceModel('TPE')
+            price = TPE_model.predictPrice(lst[0]) * 3.3058
+            print(price)
+            
         
 
         
