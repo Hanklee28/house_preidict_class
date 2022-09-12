@@ -10,8 +10,8 @@ class HousePriceModel:
 
     def __init__(self, c):
         self.cityname = c
-        self.modelpath = f'./{self.cityname}/model_mlp.pkl'
-        data=pd.read_csv(f'../03.dataset/{self.cityname}_model_features_clean.csv')
+        self.modelpath = f'./model/{self.cityname}/model_mlp.pkl'
+        data=pd.read_csv(f'./model/{self.cityname}_model_features_clean.csv')
         # 單熱編碼
         data_class = pd.get_dummies(data['鄉鎮市區'])
         data_class.columns = ['鄉鎮市區_' + str(x) for x in data_class.columns]
@@ -29,7 +29,7 @@ class HousePriceModel:
 
         # 訓練集 & 測試集
         test_data = data.loc[data['交易年份'] >= 111]
-        test_data.to_csv(f'./{self.cityname}/test_data.csv')
+        test_data.to_csv(f'./model/{self.cityname}/test_data.csv')
         train_data =  data.loc[data['交易年份'] < 111]
         
         # 資料標準化
@@ -46,7 +46,7 @@ class HousePriceModel:
         model_mlp.fit(X_train, y_train)
         mlp_score=model_mlp.score(X_train,y_train)
 
-        joblib.dump(model_mlp, f'./{self.cityname}/model_mlp.pkl')
+        joblib.dump(model_mlp, f'./model/{self.cityname}/model_mlp.pkl')
         print(f'model score: {mlp_score}')
 
     def testModel(self, testfile):
@@ -59,12 +59,12 @@ class HousePriceModel:
             y_test = np.array(test_data['y'])
 
             
-            model_mlp = joblib.load(f'./{self.cityname}/model_mlp.pkl')
+            model_mlp = joblib.load(f'./model/{self.cityname}/model_mlp.pkl')
             result = model_mlp.predict(X_test)
             fig = plt.figure(figsize=(10,5))
             residuals = (y_test- result)
             sns.distplot(residuals)
-            plt.savefig(f'./{self.cityname}/residuals.png')
+            plt.savefig(f'./model/{self.cityname}/residuals.png')
 
             data1 = pd.DataFrame({'origin':y_test * self.std['y'] + self.mean['y'],'predict':result* self.std['y'] + self.mean['y'],
                                 'residual':(y_test * self.std['y'] + self.mean['y']) - (result* self.std['y'] + self.mean['y'])})
@@ -99,7 +99,7 @@ class HousePriceModel:
     
     def predictPrice(self, lst):
         if os.path.isfile(self.modelpath):
-            test_data = pd.read_csv(f'./{self.cityname}/test_data.csv')
+            test_data = pd.read_csv(f'./model/{self.cityname}/test_data.csv')
             test_data.drop(['Unnamed: 0', 'y'],axis=1,inplace=True)
             predict_data = pd.DataFrame(np.array(lst)).T
             predict_data.columns = test_data.columns
@@ -110,7 +110,7 @@ class HousePriceModel:
             predict_data = np.array((predict_data - mean) / std)
             # print(predict_data)
 
-            model_mlp = joblib.load(f'./{self.cityname}/model_mlp.pkl')
+            model_mlp = joblib.load(f'./model/{self.cityname}/model_mlp.pkl')
             result = model_mlp.predict(predict_data)
             print(result)
             result = result * self.std['y'] + self.mean['y']
