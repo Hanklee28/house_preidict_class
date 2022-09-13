@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from layer.data_preprocessing import HouseObject
 from model.house_price_MLP import HousePriceModel
 import pandas as pd
@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 
 
-# 主頁
+# 主頁：網頁使用說明
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -20,12 +20,12 @@ def index():
 def index2():
     return render_template("about.html")
 
-# 圖表分析頁
+# 地圖圖表分析頁
 @app.route('/analysis')
-def index4():
+def analysis():
     return render_template("analysis.html")
 
-# 地圖頁
+# 模型訓練頁
 @app.route('/model', methods=['GET', 'POST'])  # type: ignore
 def get_form():
     # GET 方法
@@ -186,13 +186,20 @@ def get_form():
         
         #print(lon, lat)
 
-        return render_template('model.html', page_header="Form")
+        return redirect("analysis")
+        # return render_template('model.html', page_header="Form", hospital = hospital)
 
 
-#功能測試頁
-@app.route('/test')
+#功能測試頁：完成後需移除
+@app.route('/test')  # type: ignore
 def test():
-    return render_template('test.html')
+    if request.method == "GET":
+        return render_template('test.html', page_header="Form")
+    
+    # POST 方法
+    elif request.method == "POST":
+        return redirect("analysis.html")
+
 
 
 if __name__=="__main__":

@@ -434,36 +434,26 @@
             <!-- <div class="btn-block">
                 <button type="submit" href="model">Send</button>
             </div> -->
+
+            <!-- 送出表單資料 -->
+            <!-- onclick="$('#loading').show(); this.form.submit(); this.disabled=true;" href="model" -->
             <div class="btn-block">
-                <button type="submit" href="model">Send</button>
+                <input type="submit" value="提交" style="width:100px;"
+                    onclick="$('#loading').show(); this.form.submit(); this.disabled=true;" href="model" href="model" />
+                <input type="submit" value="清除" style="width:100px;" />
             </div>
-
-            <!-- 方法一 -->
-            <br />
-            <input type="submit" value="Send" style="width:100px;"
-                onclick="$('#loading').show(); this.form.submit(); this.disabled=true;" href="model" />
-
-
 
         </form>
-        <!-- 方法三未完成 -->
-        <!-- <div id="loading-div-background">
-            <div id="loading-div" class="ui-corner-all">
-                <img style="height:32px;width:32px;margin:30px;" src="{{url_for('static', filename='building.gif')}}"
-                    alt="Loading.." /><br>PROCESSING.
-                PLEASE WAIT...
-            </div>
-        </div> -->
 
-        <!-- 方法一 -->
+
+        <!-- loading 圖示，預設隱藏 -->
         <div id="loading" style="display:none; z-index: 999; position:fixed; top: 20%;">
-            <div style=" font-size: x-large; color:#202020; background-color: #b1ddf8">
-                MODEL CALCULATING...PLEASE WAIT...
-            </div>
+            <div style=" font-size: x-large; color:#202020; background-color: #b1ddf8">MODEL CALCULATING...PLEASE
+                WAIT...</div>
             <img src="{{url_for('static', filename='building.gif')}}" alt="Loading..." height="400" />
-
         </div>
     </div>
+
     <!-- Footer-->
     <footer class="border-top">
         <div class="container px-4 px-lg-5">
