@@ -10,31 +10,30 @@ app = Flask(__name__)
 
 
 
-#----------practice start------------
+# 主頁
 @app.route('/')
 def index():
     return render_template("index.html")
 
+# 組員資料頁
 @app.route('/about')
 def index2():
     return render_template("about.html")
 
-@app.route('/model')
-def index3():
-    return render_template("model.html")    
-
+# 圖表分析頁
 @app.route('/analysis')
 def index4():
     return render_template("analysis.html")
 
-
-#----------practice end-------------- 
-#----------post-------------- 
-@app.route('/model', methods=['GET', 'POST'])
+# 地圖頁
+@app.route('/model', methods=['GET', 'POST'])  # type: ignore
 def get_form():
+    # GET 方法
     if request.method == "GET":
         return render_template('model.html', page_header="Form")
-    elif request.method == "POST":# 以post的形式傳出去
+    
+    # POST 方法
+    elif request.method == "POST":
         print(f'req_value:{request.values}')
         d1 = {
             '交易標的':[int(request.values['target'])],
@@ -42,9 +41,9 @@ def get_form():
             '建物現況格局-廳':[int(request.values['livingroom'])],
             '建物現況格局-衛':[int(request.values['bathroom'])],
             '有無管理組織':[int(request.values['manage_org'])],
-            '主建物面積':[float(request.values['main_area'])],
-            '附屬建物面積':[float(request.values['sub_area'])],
-            '陽台面積':[float(request.values['balcony'])],
+            '主建物面積':[int(request.values['main_area'])],
+            '附屬建物面積':[int(request.values['sub_area'])],
+            '陽台面積':[int(request.values['balcony'])],
             '電梯':[int(request.values['elevator'])],
             '屋齡':[int(request.values['age'])],
             '交易年份':[111],
@@ -125,9 +124,9 @@ def get_form():
         target_layer = gpd.read_file('./layer/public_safety/firestation.geojson', encoding = 'utf-8')
         firestation = house.sjoin_point_layer(target_layer, 'near_firestation', '消防隊名稱', 'near')
         target_layer = gpd.read_file('./layer/public_safety/fuel.geojson', encoding = 'utf-8')
-        fuel = house.overlay_polygon_layer(target_layer, 'near_fuel', 'full_id', 'near')
+        fuel = house.overlay_polygon_layer(target_layer, 'fuel_count', 'full_id', 'count')
         target_layer = gpd.read_file('./layer/public_safety/market.geojson', encoding = 'utf-8')
-        market = house.overlay_polygon_layer(target_layer, 'near_market', 'full_id', 'near')
+        market = house.overlay_polygon_layer(target_layer, 'market_count', 'full_id', 'count')
         target_layer = gpd.read_file('./layer/public_safety/police.geojson', encoding = 'utf-8')
         police = house.sjoin_point_layer(target_layer, 'near_police', '中文單位名稱', 'near')
         target_layer = gpd.read_file('./layer/public_safety/placeofworkship.geojson', encoding = 'utf-8')
@@ -173,53 +172,12 @@ def get_form():
             }
             df2 = pd.DataFrame(data=d2)
             df2[request.values['district']] = 1
-            result.drop(['idx','lon','lat','geometry','near_LRT_250','near_LRT_500','near_LRT_750','near_fuel_dist','near_market_dist'],axis=1,inplace=True)
+            result.drop(['idx','lon','lat','geometry','near_LRT_250','near_LRT_500','near_LRT_750'],axis=1,inplace=True)
             result = result.join(df2)
             lst = result.values.tolist()
             print(lst[0])
 
             TPE_model = HousePriceModel('TPE')
-            price = TPE_model.predictPrice(lst[0]) * 3.3058
-            print(price)
-
-        if request.values['county'] == '新北市':
-            d2 = {
-                '三峽區':[0],
-                '三芝區':[0],
-                '三重區':[0],
-                '中和區':[0],
-                '五股區':[0],
-                '八里區':[0],
-                '土城區':[0],
-                '新店區':[0],
-                '新莊區':[0],
-                '板橋區':[0],
-                '林口區':[0],
-                '樹林區':[0],
-                '永和區':[0],
-                '汐止區':[0],
-                '泰山區':[0],
-                '淡水區':[0],
-                '深坑區':[0],
-                '烏來區':[0],
-                '瑞芳區':[0],
-                '石碇區':[0],
-                '石門區':[0],
-                '萬里區':[0],
-                '蘆洲區':[0],
-                '貢寮區':[0],
-                '金山區':[0],
-                '雙溪區':[0],
-                '鶯歌區':[0]
-            }
-            df2 = pd.DataFrame(data=d2)
-            df2[request.values['district']] = 1
-            result.drop(['idx','lon','lat','geometry','near_fuel_dist','near_market_dist'],axis=1,inplace=True)
-            result = result.join(df2)
-            lst = result.values.tolist()
-            print(lst[0])
-
-            TPE_model = HousePriceModel('NTPC')
             price = TPE_model.predictPrice(lst[0]) * 3.3058
             print(price)
             
@@ -229,13 +187,12 @@ def get_form():
         #print(lon, lat)
 
         return render_template('model.html', page_header="Form")
-# @app.route('/form_result', methods=['POST']) # default methods is "GET"
-# def form_result():
-#     data = [["method:", request.method],
-#             ["base_url:", request.base_url],
-#             ["form data:", request.form]]
-#     return render_template('model.html', page_header="Form data", data=data)
 
+
+#功能測試頁
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 
 if __name__=="__main__":
