@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 方法一 -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+
+    <!-- 方法三 -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loading-div-background").css({ opacity: 1.0 });
+        });
+
+        function ShowProgressAnimation() {
+            $("#loading-div-background").show();
+        }
+    </script>
+    <style>
+        #loading-div-background {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+
+        #loading-div {
+            width: 300px;
+            height: 150px;
+            background-color: #fff;
+            border: 5px solid #1468b3;
+            text-align: center;
+            color: #202020;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -100px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            behavior: url("/css/pie/PIE.htc");
+            /* HANDLES IE */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 方法一 -->
+    <!-- <form action="">
+        <br />
+        <input type="submit" value="Click!" style="width:100px;" onclick="$('#loading').show();" />
+    </form>
+    <div id="loading" style="display:none;"><img src="{{url_for('static', filename='building.gif')}}" alt="" />Loading!
+    </div> -->
+
+    <!-- 方法二 -->
+    <form id="form" action="">
+        <div id="loading2" style="display:none;"><img src="{{url_for('static', filename='building.gif')}}"
+                alt="" />Loading2!</div>
+        <input id="submit" value="Click!" type="submit" />
+    </form>
+    <script type="text/javascript">
+        (function (d) {
+            d.getElementById('form').onsubmit = function () {
+                // d.getElementById('submit').style.display = 'block';
+                d.getElementById('submit').style.display = 'none'
+                d.getElementById('loading2').style.display = 'block';
+            };
+        }(document));
+    </script>
+
+    <!-- 方法三 -->
+    <!-- <form id="frm_send" name="frm_send" method="post" action="test.html" enctype="multipart/form-data">
+        // Fields omitted for brevity
+        <input type="submit" id="submit" name="submit" class="button" onclick="ShowProgressAnimation();" value="Send">
+    </form>
+    <div id="loading-div-background">
+        <div id="loading-div" class="ui-corner-all">
+            <img style="height:32px;width:32px;margin:30px;" src="{{url_for('static', filename='building.gif')}}"
+                alt="Loading.." /><br>PROCESSING.
+            PLEASE WAIT...
+        </div>
+    </div> -->
+</body>
+
+</html>

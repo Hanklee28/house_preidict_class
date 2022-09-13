@@ -112,7 +112,7 @@ class HousePriceModel:
 
             model_mlp = joblib.load(f'./model/{self.cityname}/model_mlp.pkl')
             result = model_mlp.predict(predict_data)
-            #print(result)
+            print(result)
             result = result * self.std['y'] + self.mean['y']
             return result
         else:
