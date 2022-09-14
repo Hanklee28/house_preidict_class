@@ -20,15 +20,14 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../static/styles.css" rel="stylesheet" />
 
-    <!-- Include Leaflet CSS file in the head section of your document -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+    <!-- 移到analysis頁面，Include Leaflet CSS file in the head section of your document -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-        crossorigin="" />
-    <!-- Include Leaflet JavaScript file after Leaflet’s CSS -->
-    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        crossorigin="" /> -->
+    <!-- 移到analysis頁面，Include Leaflet JavaScript file after Leaflet’s CSS -->
+    <!-- <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin=""></script>
-    <!-- Make sure the map container has a defined height, for example by setting it in CSS -->
+        crossorigin=""></script> -->
 
     <!-- form link -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
@@ -40,9 +39,10 @@
     <script src="../static/tw-city-selector.js"></script>
 
     <style>
-        #map {
+        /* 移到analysis頁面，Make sure the map container has a defined height, for example by setting it in CSS */
+        /* #map {
             height: 480px;
-        }
+        } */
 
 
         html,
@@ -313,14 +313,14 @@
         </div>
     </nav>
 
-    <!-- Put a div element with a certain id where you want your map to be -->
+    <!-- 移到analysis頁面，Put a div element with a certain id where you want your map to be -->
+    <!-- <div style="color:white">被擋住了</div>
     <div style="color:white">被擋住了</div>
     <div style="color:white">被擋住了</div>
-    <div style="color:white">被擋住了</div>
-    <div id="map"></div>
+    <div id="map"></div> -->
 
-    <!-- Let’s create a map of the center of London with pretty OpenStreetMap tiles. From here on, we’ll be working in JS. First we’ll initialize the map and set its view to our chosen geographical coordinates and a zoom level -->
-    <script>
+    <!-- 移到analysis頁面，Let’s create a map of the center of London with pretty OpenStreetMap tiles. From here on, we’ll be working in JS. First we’ll initialize the map and set its view to our chosen geographical coordinates and a zoom level -->
+    <!-- <script>
         var map = L.map('map').setView([25.0339145, 121.5412233], 13);
         // add a tile layer to add to our map
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -336,7 +336,7 @@
         L.marker([51.5, -0.09], { icon: greenIcon }).addTo(map);
         var marker = L.marker([25.0339145, 121.5412233], { icon: greenIcon }).addTo(map);
         marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-    </script>
+    </script> -->
 
 
     <!-- Page Header-->
