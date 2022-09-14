@@ -1,0 +1,21 @@
+        共13項輸入值
+        <欄位> : <key> 
+        縣市 : county,
+        區域 : district
+        詳細地址 : street
+        交易標的 : target, .
+        車位種類 : parking, .
+        房 : bedroom, .
+        廳 : livingroom, .
+        衛 : bathroom, .
+        有無管理組職 : manage_org, .
+        主建築物面積 : main_area, .
+        附屬建物面積 : sub_area, .
+        陽台面積 : balcony, .
+        屋齡 : age, .
+        有無電梯 : elevator, .
+        樓層 : floor, .
+        總樓層 : total_floor, .
+        建物型態 : type,.
+
+        

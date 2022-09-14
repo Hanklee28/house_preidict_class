@@ -22,11 +22,20 @@
         rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="../static/styles.css" rel="stylesheet" />
+    <!-- city/area select bar  -->
+    <script src="../static/tw-city-selector.js"></script>
+
+    <!-- 可更改：頁面的CSS -->
+    {% block css %}{% endblock %}
+
+    <!-- 可更改：頁面的JS -->
+    {% block js %}{% endblock %}
+
 </head>
 
 <body>
     <!-- Navigation-->
-    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav2">
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="/">iSpan BDSE26</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
@@ -39,7 +48,7 @@
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="/">首頁</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="model">估價模型</a></li>
                     <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="analysis">數據分析</a></li>
-                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about">聯絡我們</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="team">組員介紹</a></li>
                 </ul>
             </div>
         </div>
@@ -66,7 +75,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; iSpan BDSE26 TEAM2 2022_09
+                    <div class="small text-center text-muted fst-italic">Copyright &copy; iSpan BDSE26 TEAM2 20220928
                     </div>
                 </div>
             </div>
