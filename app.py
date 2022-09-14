@@ -30,7 +30,8 @@ def analysis():
 def get_form():
     # GET 方法
     if request.method == "GET":
-        return render_template('model.html', page_header="Form")
+        return render_template('model.html')
+        # return render_template('model.html', page_header="Form")
     
     # POST 方法
     elif request.method == "POST":
@@ -254,7 +255,7 @@ def get_form():
 @app.route('/test')  # type: ignore
 def test():
     if request.method == "GET":
-        return render_template('test.html', page_header="Form")
+        return render_template('test.html')
     
     # POST 方法
     elif request.method == "POST":
