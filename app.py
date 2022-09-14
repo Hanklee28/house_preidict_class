@@ -10,22 +10,12 @@ app = Flask(__name__)
 
 
 
-# 主頁：網頁使用說明
+# 首頁：網頁使用說明
 @app.route('/')
 def index():
     return render_template("index.html")
 
-# 組員資料頁
-@app.route('/about')
-def index2():
-    return render_template("about.html")
-
-# 地圖圖表分析頁
-@app.route('/analysis')
-def analysis():
-    return render_template("analysis.html")
-
-# 模型訓練頁
+# 估價模型頁
 @app.route('/model', methods=['GET', 'POST'])  # type: ignore
 def get_form():
     # GET 方法
@@ -244,11 +234,22 @@ def get_form():
             price = TPE_model.predictPrice(lst[0]) * 3.3058
             print(price)
 
-        
-        #print(lon, lat)
+        # return redirect("analysis")
+        return render_template('analysis.html', hospital=hospital, house_lon=house_lon, house_lat=house_lat, price=price)
 
-        return redirect("analysis")
-        # return render_template('model.html', page_header="Form", hospital = hospital)
+# 數據分析頁
+@app.route('/analysis')
+def analysis():
+    house_lat = 121.5412233
+    house_lon = 25.0339145
+    return render_template("analysis.html", house_lon=house_lon, house_lat=house_lat)
+
+# 組員介紹頁
+@app.route('/team')
+def team():
+    return render_template("team.html")
+
+
 
 
 #功能測試頁：完成後需移除
