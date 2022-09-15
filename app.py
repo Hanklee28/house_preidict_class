@@ -251,7 +251,7 @@ def get_form():
             print(price)
 
         # return redirect("analysis")
-        return render_template('analysis.html', hospital=hospital, house_lon=house_lon, house_lat=house_lat, price=price)
+        return render_template('analysis.html',conveniencestore=conveniencestore, hospital=hospital, house_lon=house_lon, house_lat=house_lat, price=price)
 
 # 數據分析頁
 @app.route('/analysis')
