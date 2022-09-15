@@ -197,6 +197,19 @@
         iconSize: [40,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
+     // 醫院圖示
+     var hospitalIcon = L.icon({
+    iconUrl: '../static/imgs/hospital.png',
+    iconSize: [30,], // size of the icon
+        // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
+    });
+    // 便利店圖示
+    var convenienceIcon = L.icon({
+        iconUrl: '../static/imgs/convenience_store.png',
+        iconSize: [30,], // size of the icon
+        // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
+    });
+
 
     // 模型計算地址的750m範圍
     var circle = L.circle([house_lat, house_lon], {
@@ -213,7 +226,7 @@
     // 超商圖資
     for (let c of conveniencestores['features']) {
         // console.log(c['geometry']['coordinates'][0])
-        let marker = L.marker([c['geometry']['coordinates'][1], c['geometry']['coordinates'][0]])
+         let marker = L.marker([c['geometry']['coordinates'][1], c['geometry']['coordinates'][0]], { icon: convenienceIcon })
             .bindPopup('超商')
         // .openPopup();
 
@@ -230,7 +243,7 @@
 
 
     // 顯示醫院地址的房子圖示
-    var hospitals = L.marker([h_lat, h_lon], { icon: houseIcon }).addTo(map);
+    var hospitals = L.marker([h_lat, h_lon], { icon: hospitalIcon }).addTo(map);
 
 
     // 圖層
@@ -285,7 +298,12 @@
                         'rgb(153, 102, 255)',
                     ],
                     borderWidth: 1,
-                    data: [15, 10, 5, 2, 20, 30,],
+                    data: [{{tsp_count['MRTs']}},
+                    {{mdc_count['hospitals']}},
+                    {{eco_count['conveniencestores']}},
+                    {{edu_count['schools']}},
+                    {{sft_count['placeofworkships']}},
+                    {{env_count['parks']}}],
 
                 }]
             };
@@ -300,6 +318,7 @@
                     //     }
                 }
             }
+        console.log({{tsp_count['MRTs']}})
         </script>
         <script>
             const barChart = new Chart(
@@ -366,12 +385,12 @@
                 '自然環境',
                 '交通運輸',
             ];
-
+                // 
             const radar_data = {
                 labels: radar_labels,
                 datasets: [{
-                    label: '該位置總和指標',
-                    data: [65, 59, 90, 81, 56, 55],
+                    label: '該位置綜和指標',
+                    data: {{ values }}, 
                     fill: true,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
@@ -381,7 +400,7 @@
                     pointHoverBorderColor: 'rgb(255, 99, 132)'
                 }, {
                     label: '該區域綜合指標',
-                    data: [28, 48, 40, 19, 96, 27],
+                    data: {{values2}},
                     fill: true,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
