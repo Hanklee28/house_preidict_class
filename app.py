@@ -235,10 +235,54 @@ def get_form():
             result.drop(['idx','lon','lat','geometry','near_fuel_dist','near_market_dist','near_LRT_250','near_LRT_500','near_LRT_750'],axis=1,inplace=True)
             result = result.join(df2)
             lst = result.values.tolist()
-            print(lst[0])
 
             TPE_model = HousePriceModel('TPE')
-            price = TPE_model.predictPrice(lst[0]) * 3.3058
+            analysis_data, price = TPE_model.predictPrice(lst[0])
+            price = price * 3.3058
+            analysis_data = analysis_data[0]
+            medical_facilities_indicators = analysis_data[26] + analysis_data[30] + analysis_data[33] + analysis_data[36]
+            economic_indicators_indicators = analysis_data[39] + analysis_data[42]
+            educational_resources_indicators = analysis_data[45] + analysis_data[48] + analysis_data[52] + analysis_data[56]
+            public_safety_indicators = analysis_data[60] - analysis_data[63] - analysis_data[66] + analysis_data[69]
+            natural_environment_indicators = analysis_data[72] + analysis_data[75] - analysis_data[78]
+            transportation_indicators = analysis_data[81] + analysis_data[84] + analysis_data[88] + analysis_data[92]
+
+            ind = pd.read_csv('./model/TPE/Min_max_data.csv')
+            s1 = (ind.iloc[0,2] - ind.iloc[0,1])/10
+            s2 = (ind.iloc[0,4] - ind.iloc[0,3])/10
+            s3 = (ind.iloc[0,6] - ind.iloc[0,5])/10
+            s4 = (ind.iloc[0,8] - ind.iloc[0,7])/10
+            s5 = (ind.iloc[0,10] - ind.iloc[0,9])/10
+            s6 = (ind.iloc[0,12] - ind.iloc[0,11])/10
+
+            # 房屋六圍
+            values = [(medical_facilities_indicators- ind.iloc[0,1]) / s1,
+            (economic_indicators_indicators- ind.iloc[0,3]) / s2,
+            (educational_resources_indicators - ind.iloc[0,5]) / s3,
+            (public_safety_indicators - ind.iloc[0,7]) / s4,
+            (natural_environment_indicators - ind.iloc[0,9]) / s5,
+            (transportation_indicators- ind.iloc[0,11]) / s6]
+
+            dis = pd.read_csv('./model/TPE/district_data.csv')
+            testLst = dis['dist'].tolist()
+            print(testLst)
+            distt = 0
+            i = 0
+            for t in testLst:
+                if t == request.values['district']:
+                    distt = i
+                i = i + 1
+
+            # 行政區六圍
+            values2 = [(dis.iloc[distt,2:8].tolist()[0]- ind.iloc[0,1]) / s1,
+            (dis.iloc[distt,2:8].tolist()[1]- ind.iloc[0,3]) / s2,
+            (dis.iloc[distt,2:8].tolist()[2] - ind.iloc[0,5]) / s3,
+            (dis.iloc[distt,2:8].tolist()[3] - ind.iloc[0,7]) / s4,
+            (dis.iloc[distt,2:8].tolist()[4] - ind.iloc[0,9]) / s5,
+            (dis.iloc[distt,2:8].tolist()[5]- ind.iloc[0,11]) / s6]
+
+            print(f'房屋六圍:{values}')
+            print(f'行政區六圍:{values2}')
             print(price)
 
         if request.values['county'] == '新北市':

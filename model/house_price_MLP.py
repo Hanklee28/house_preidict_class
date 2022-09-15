@@ -62,9 +62,8 @@ class HousePriceModel:
             model_mlp = joblib.load(f'./model/{self.cityname}/model_mlp.pkl')
             result = model_mlp.predict(X_test)
             fig = plt.figure(figsize=(10,5))
-            residuals = (y_test- result)
-            sns.distplot(residuals)
-            plt.savefig(f'./model/{self.cityname}/residuals.png')
+            residuals = (y_test * self.std['y'] + self.mean['y'])- (result * self.std['y'] + self.mean['y'])
+            pd.DataFrame(residuals).to_csv(f'./model/{self.cityname}/residuals.csv')
 
             data1 = pd.DataFrame({'origin':y_test * self.std['y'] + self.mean['y'],'predict':result* self.std['y'] + self.mean['y'],
                                 'residual':(y_test * self.std['y'] + self.mean['y']) - (result* self.std['y'] + self.mean['y'])})
@@ -114,6 +113,6 @@ class HousePriceModel:
             result = model_mlp.predict(predict_data)
             print(result)
             result = result * self.std['y'] + self.mean['y']
-            return result
+            return predict_data, result
         else:
             print('模型尚未訓練，請先訓練模型')
