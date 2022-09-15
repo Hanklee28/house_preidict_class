@@ -280,10 +280,12 @@ def get_form():
             (dis.iloc[distt,2:8].tolist()[3] - ind.iloc[0,7]) / s4,
             (dis.iloc[distt,2:8].tolist()[4] - ind.iloc[0,9]) / s5,
             (dis.iloc[distt,2:8].tolist()[5]- ind.iloc[0,11]) / s6]
-
-            print(f'房屋六圍:{values}')
-            print(f'行政區六圍:{values2}')
-            print(price)
+            # 模型精度圖
+            residuals = pd.read_csv('./model/TPE/TPE_residuals.csv')
+            residuals = residuals.iloc[:,1].tolist()
+            # 行政區歷史成交資訊
+            history_price = pd.read_csv('./model/TPE/TPE_history_price.csv')
+            history_price = history_price.iloc[distt,2:11].tolist()
 
         if request.values['county'] == '新北市':
             d2 = {
@@ -322,8 +324,8 @@ def get_form():
             lst = result.values.tolist()
             print(lst[0])
 
-            TPE_model = HousePriceModel('NTPC')
-            price = TPE_model.predictPrice(lst[0]) * 3.3058
+            NTPC_model = HousePriceModel('NTPC')
+            price = NTPC_model.predictPrice(lst[0]) * 3.3058
             print(price)
             
         if request.values['county'] == '基隆市':
@@ -343,8 +345,8 @@ def get_form():
             lst = result.values.tolist()
             print(lst[0])
 
-            TPE_model = HousePriceModel('TPE')
-            price = TPE_model.predictPrice(lst[0]) * 3.3058
+            KEL_model = HousePriceModel('TPE')
+            price = KEL_model.predictPrice(lst[0]) * 3.3058
             print(price)
 
 
