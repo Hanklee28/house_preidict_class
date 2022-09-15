@@ -103,29 +103,50 @@ def get_form():
         # 醫療設施
         target_layer = gpd.read_file('./layer/medical_facilities/hospital.geojson', encoding = 'utf-8')
         hospital = house.sjoin_point_layer(target_layer, 'near_hospital', '機構名稱', 'near')
-        hospital = json.loads(hospital)
+        hospitals = json.loads(hospital)
         target_layer = gpd.read_file('./layer/medical_facilities/clinic.geojson', encoding = 'utf-8')
-        clinic = house.sjoin_point_layer(target_layer, 'clinic_count', '機構名稱', 'count')        
+        clinic = house.sjoin_point_layer(target_layer, 'clinic_count', '機構名稱', 'count')
+        clinics = json.loads(clinic)     
         target_layer = gpd.read_file('./layer/medical_facilities/dentist.geojson', encoding = 'utf-8')
         dentist = house.sjoin_point_layer(target_layer, 'dentist_count', '機構名稱', 'count')
+        dentists = json.loads(dentist)
         target_layer = gpd.read_file('./layer/medical_facilities/pharmacy.geojson', encoding = 'utf-8')
         pharmacy = house.sjoin_point_layer(target_layer, 'pharmacy_count', '機構名稱', 'count')
+        pharmacies = json.loads(pharmacy)
+
+        mdc_count = {'total':len(hospitals['features']) + len(clinics['features']) + len(dentists['features']) + len(pharmacies['features']),
+        'hospitals': len(hospitals['features']),
+        'clinics': len(clinics['features']),
+        'dentists': len(dentists['features']),
+        'pharmacies': len(pharmacies['features'])}
 
         # 經濟指標
         target_layer = gpd.read_file('./layer/economic_indicators/conveniencestore.geojson', encoding = 'utf-8')
         conveniencestore = house.sjoin_point_layer(target_layer, 'conveniencestore_count', '分公司名稱', 'count')
-        conveniencestore = json.loads(conveniencestore)
+        conveniencestores = json.loads(conveniencestore)
         target_layer = gpd.read_file('./layer/economic_indicators/fastfood.geojson', encoding = 'utf-8')
         fastfood = house.overlay_polygon_layer(target_layer, 'fastfood_count', 'full_id', 'count')
-        print(conveniencestore)
+        fastfoods = json.loads(fastfood)
+
+        eco_count = {'total': len(conveniencestores['features']) + len(fastfoods['features']),
+        'conveniencestores': len(conveniencestores['features']),
+        'fastfoods': len(fastfoods['features'])}
 
         # 文教機構
         target_layer = gpd.read_file('./layer/educational_resources/library.geojson', encoding = 'utf-8')
         library = house.overlay_polygon_layer(target_layer, 'library_count', 'full_id', 'count')
+        libraries = json.loads(library)
         target_layer = gpd.read_file('./layer/educational_resources/school.geojson', encoding = 'utf-8')
         school = house.overlay_polygon_layer(target_layer, 'near_school', 'full_id', 'near')
+        schools = json.loads(school)
         target_layer = gpd.read_file('./layer/educational_resources/university.geojson', encoding = 'utf-8')
         university = house.overlay_polygon_layer(target_layer, 'near_university', 'full_id', 'near')
+        universities = json.loads(university)
+
+        edu_count = {'total': len(libraries['features']) + len(schools['features']) + + len(universities['features']),
+        'libraries': len(libraries['features']),
+        'schools': len(schools['features']),
+        'universities': len(universities['features'])}
 
         # 公共安全
         target_layer = gpd.read_file('./layer/public_safety/firestation.geojson', encoding = 'utf-8')
@@ -139,6 +160,8 @@ def get_form():
         target_layer = gpd.read_file('./layer/public_safety/placeofworkship.geojson', encoding = 'utf-8')
         placeofworkship = house.overlay_polygon_layer(target_layer, 'placeofworkship_count', 'full_id', 'count')
 
+        sft_count = {}
+
         # 自然環境
         target_layer = gpd.read_file('./layer/natural_environment/cemetery.geojson', encoding = 'utf-8')
         cemetery = house.overlay_polygon_layer(target_layer, 'cemetery_area', 'full_id', 'area')
@@ -146,6 +169,8 @@ def get_form():
         park = house.overlay_polygon_layer(target_layer, 'park_area', 'full_id', 'area')
         target_layer = gpd.read_file('./layer/natural_environment/river_TW.geojson', encoding = 'utf-8')
         river_TW = house.overlay_polygon_layer(target_layer, 'river_TW_area', 'full_id', 'area')
+
+        env_count = {}
 
         # 交通運輸
         target_layer = gpd.read_file('./layer/transportation/parking.geojson', encoding = 'utf-8')
@@ -158,6 +183,8 @@ def get_form():
         MRT = house.sjoin_point_layer(target_layer, 'near_MRT', 'MARKID', 'near')
         target_layer = gpd.read_file('./layer/transportation/TRA.geojson', encoding = 'utf-8')
         TRA = house.sjoin_point_layer(target_layer, 'near_TRA', 'MARKID', 'near')
+
+        tsp_count = {}
 
         result = house.return_geo_dataframe()
         result = df.join(result)
