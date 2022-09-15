@@ -12,7 +12,9 @@
     crossorigin="" />
 <style>
     #map {
-        height: 480px;
+        margin: 7vh auto;
+        height: 80vh;
+        width: 90vw;
     }
 
     /* Nav CSS */
@@ -152,28 +154,90 @@
 <!-- 頁面的內容 -->
 {% block main %}
 <!-- OpenStreetMap -->
-<div>經緯度:({{house_lon}}, {{house_lat}}), 每平方尺價格:{{price}}</div>
+
+<!-- 經度 -->
+<div>醫院:{{hospital['features'][0]['geometry']['coordinates'][0]}}</div>
+<!-- 緯度 -->
+<div>醫院:{{hospital['features'][0]['geometry']['coordinates'][1]}}</div>
+
+<!-- {% for c in conveniencestore['features'] %}
+超商經度:{{c['geometry']['coordinates'][0]}}
+超商緯度:{{c['geometry']['coordinates'][1]}}
 <br>
-<br>
-<br>
+{% endfor%} -->
+
+<!-- 建立地圖範圍 -->
 <div id="map"></div>
 <script>
-    var map = L.map('map').setView([25.0339145, 121.5412233], 13);
-    // add a tile layer to add to our map
+    // 讀取模型計算地址的經緯度
+    var house_lon = {{ house_lon | tojson }};
+    var house_lat = {{ house_lat | tojson }};
+
+    // 醫院的經緯度
+    var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
+    var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
+
+    // 設定地圖中心與放大比例
+    var map = L.map('map', {
+        center: [house_lat, house_lon],
+        zoom: 15
+    });
+    // add a tile layer to our map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap'
+        attribution: 'BDSE26 © OpenStreetMap'
     }).addTo(map);
 
+    // 建立房子圖示
     var houseIcon = L.icon({
         iconUrl: '../static/imgs/pinkhouse.png',
-        iconSize: [50,], // size of the icon
-        iconAnchor: [22, 10], // point of the icon which will correspond to marker's location
+        iconSize: [40,], // size of the icon
+        // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
-    L.marker([51.5, -0.09], { icon: houseIcon }).addTo(map);
-    // var marker = L.marker([{{ house_lat| tojson }}, { { house_lon | tojson } }], { icon: houseIcon }).addTo(map);
-    var marker = L.marker([25.0339145, 121.5412233], { icon: houseIcon }).addTo(map);
-    marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+
+    // 模型計算地址的750m範圍
+    var circle = L.circle([house_lat, house_lon], {
+        stroke: false,
+        color: 'red',
+        fillColor: '#0037ae',
+        fillOpacity: 0.3,
+        radius: 750
+    }).addTo(map);
+
+    // 模型計算地址的房子圖示
+    var house_addr = L.marker([house_lat, house_lon], { icon: houseIcon }).addTo(map);
+
+    // 超商圖資
+    // {% for c in conveniencestore['features'] %}
+    // console.log({ { c['geometry']['coordinates'][0] } })
+    // 超商經度: { { c['geometry']['coordinates'][0] } }
+    // 超商緯度: { { c['geometry']['coordinates'][1] } }
+    // {% endfor %}
+
+    // for (let o of arr) {
+    //     let marker = L.marker([o['latitude'], o['longitude']])
+    //         .bindPopup(o['name'])
+    //         .openPopup();
+    // }
+
+    var hospitals = L.marker([house_lat, house_lon], { icon: houseIcon }).addTo(map);
+
+    marker.bindPopup("資展國際").openPopup();
+
+    // 圖層
+    // var baselayers = {
+    //     'OpenStreetMap.Mapnik': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+    //     'OpenStreetMap.DE': L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'),
+    //     'OpenStreetMap.CH': L.tileLayer('https://tile.osm.ch/switzerland/{z}/{x}/{y}.png'),
+    //     'OpenStreetMap.France': L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png'),
+    //     'OpenStreetMap.HOT': L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'),
+    //     'OpenStreetMap.BZH': L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png'),
+    //     'OpenTopoMap': L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
+    // };
+    // var overlays = {};
+    // L.control.layers(baselayers, overlays).addTo(map);
+    // baselayers['OpenStreetMap.Mapnik'].addTo(map);
+    // L.tileLayer('layer 的 url').addTo(map);
 </script>
 
 <!-- 圖表區 -->
