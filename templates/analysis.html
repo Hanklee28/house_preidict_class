@@ -155,21 +155,19 @@
 {% block main %}
 <!-- OpenStreetMap -->
 
-<!-- 經度 -->
-<div>醫院:{{hospital['features'][0]['geometry']['coordinates'][0]}}</div>
-<!-- 緯度 -->
-<div>醫院:{{hospital['features'][0]['geometry']['coordinates'][1]}}</div>
-<div>{{mdc_count}}</div>
-
-<!-- {% for c in conveniencestore['features'] %}
-超商經度:{{c['geometry']['coordinates'][0]}}
-超商緯度:{{c['geometry']['coordinates'][1]}}
-<br>
-{% endfor%} -->
+<div>輸入點:( {{house_lon}}, {{house_lat}} )</div>
+<!-- [0]:經度, [1]:緯度 -->
+<div>醫院:( {{hospital['features'][0]['geometry']['coordinates'][0]}},
+    {{hospital['features'][0]['geometry']['coordinates'][1]}} )</div>
+{{conveniencestore['features'][0]['properties']['名稱']}}
 
 <!-- 建立地圖範圍 -->
 <div id="map"></div>
 <script>
+    //設定圖層群組
+    let layerGroup = null;
+    let arrLayers = [];
+
     // 讀取模型計算地址的經緯度
     var house_lon = {{ house_lon | tojson }};
     var house_lat = {{ house_lat | tojson }};
@@ -177,6 +175,10 @@
     // 醫院的經緯度
     var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
     var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
+
+    // 超商的經緯度
+    var conveniencestores = {{ conveniencestore | tojson  }}
+
 
     // 設定地圖中心與放大比例
     var map = L.map('map', {
@@ -205,25 +207,31 @@
         radius: 750
     }).addTo(map);
 
-    // 模型計算地址的房子圖示
+    // 顯示模型計算地址的房子圖示
     var house_addr = L.marker([house_lat, house_lon], { icon: houseIcon }).addTo(map);
 
     // 超商圖資
-    // {% for c in conveniencestore['features'] %}
-    // console.log({ { c['geometry']['coordinates'][0] } })
-    // 超商經度: { { c['geometry']['coordinates'][0] } }
-    // 超商緯度: { { c['geometry']['coordinates'][1] } }
-    // {% endfor %}
+    for (let c of conveniencestores['features']) {
+        // console.log(c['geometry']['coordinates'][0])
+        let marker = L.marker([c['geometry']['coordinates'][1], c['geometry']['coordinates'][0]])
+            .bindPopup('超商')
+        // .openPopup();
 
-    // for (let o of arr) {
-    //     let marker = L.marker([o['latitude'], o['longitude']])
-    //         .bindPopup(o['name'])
-    //         .openPopup();
-    // }
+        //將 markers 各別放到空陣列 arrLayers 當中
+        arrLayers.push(marker);
 
-    var hospitals = L.marker([house_lat, house_lon], { icon: houseIcon }).addTo(map);
+    }
+    //迴圈執行完畢後，將 arrLayers 放到 layerGroup 當中
+    layerGroup = L.layerGroup(arrLayers);
 
-    marker.bindPopup("資展國際").openPopup();
+    //將 layerGroup 放到 map 當中
+    layerGroup.addTo(map);
+
+
+
+    // 顯示醫院地址的房子圖示
+    var hospitals = L.marker([h_lat, h_lon], { icon: houseIcon }).addTo(map);
+
 
     // 圖層
     // var baselayers = {
