@@ -355,13 +355,16 @@ def get_form():
         hospital=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
+        conveniencestore=conveniencestores,
         price=price,
         mdc_count = mdc_count,
         eco_count = eco_count,
         edu_count = edu_count,
         sft_count = sft_count,
         env_count = env_count,
-        tsp_count = tsp_count)
+        tsp_count = tsp_count,
+        values=values,
+        values2=values2)
 
 # 數據分析頁
 @app.route('/analysis')
