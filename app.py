@@ -184,7 +184,9 @@ def get_form():
         env_count = env_count,
         tsp_count = tsp_count,
         values=house_six_ind,
-        values2=dist_six_ind)
+        values2=dist_six_ind,
+        history_values=history_price,
+        residuals_values=residuals)
 
 # 數據分析頁
 @app.route('/analysis')
