@@ -12,7 +12,7 @@
     crossorigin="" />
 <style>
     #map {
-        margin: 7vh auto;
+        margin: 10vh auto;
         height: 80vh;
         width: 90vw;
     }
@@ -153,14 +153,8 @@
 
 <!-- 頁面的內容 -->
 {% block main %}
+
 <!-- OpenStreetMap -->
-
-<div>輸入點:( {{house_lon}}, {{house_lat}} )</div>
-<!-- [0]:經度, [1]:緯度 -->
-<div>醫院:( {{hospital['features'][0]['geometry']['coordinates'][0]}},
-    {{hospital['features'][0]['geometry']['coordinates'][1]}} )</div>
-{{conveniencestore['features'][0]['properties']['名稱']}}
-
 <!-- 建立地圖範圍 -->
 <div id="map"></div>
 <script>
@@ -171,14 +165,12 @@
     // 讀取模型計算地址的經緯度
     var house_lon = {{ house_lon | tojson }};
     var house_lat = {{ house_lat | tojson }};
-
-    // 醫院的經緯度
-    var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
-    var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
-
-    // 超商的經緯度
+    // 讀取超商的經緯度
     var conveniencestores = {{ conveniencestore | tojson  }}
 
+    // 醫院的經緯度，[0]:經度, [1]:緯度
+    var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
+    var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
 
     // 設定地圖中心與放大比例
     var map = L.map('map', {
@@ -197,10 +189,10 @@
         iconSize: [40,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
-     // 醫院圖示
-     var hospitalIcon = L.icon({
-    iconUrl: '../static/imgs/hospital.png',
-    iconSize: [30,], // size of the icon
+    // 醫院圖示
+    var hospitalIcon = L.icon({
+        iconUrl: '../static/imgs/hospital.png',
+        iconSize: [30,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
     // 便利店圖示
@@ -226,7 +218,7 @@
     // 超商圖資
     for (let c of conveniencestores['features']) {
         // console.log(c['geometry']['coordinates'][0])
-         let marker = L.marker([c['geometry']['coordinates'][1], c['geometry']['coordinates'][0]], { icon: convenienceIcon })
+        let marker = L.marker([c['geometry']['coordinates'][1], c['geometry']['coordinates'][0]], { icon: convenienceIcon })
             .bindPopup('超商')
         // .openPopup();
 
@@ -263,16 +255,32 @@
 </script>
 
 <!-- 圖表區 -->
+
 <div class="container">
+    <!-- 長條圖：周邊設施數量統計 -->
     <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
             style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
         <canvas id="barChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
         <script>
+            // 交通運輸設施：tsp_count['total']
+            // 醫療設施：mdc_count['total']
+            // 超商：eco_count['conveniencestores']
+            // 學校：edu_count['schools'] + edu_count['universities']
+            // 宮廟：sft_count['placeofworkships']
+            // 公園：env_count['parks']
+            eco_count = {{ eco_count | tojson }}
+            tsp_count = {{ tsp_count | tojson }}
+            mdc_count = {{ mdc_count | tojson }}
+            eco_count = {{ eco_count | tojson }}
+            edu_count = {{ edu_count | tojson }}
+            sft_count = {{ sft_count | tojson }}
+            env_count = {{ env_count | tojson }}
+
             const bar_labels = [
                 '交通運輸設施',
                 '醫療設施',
-                '速食店',
-                '文教機構',
+                '超商',
+                '學校',
                 '宮廟',
                 '公園',
             ];
@@ -298,13 +306,14 @@
                         'rgb(153, 102, 255)',
                     ],
                     borderWidth: 1,
-                    data: [{{tsp_count['MRTs']}},
-                    {{mdc_count['hospitals']}},
-                    {{eco_count['conveniencestores']}},
-                    {{edu_count['schools']}},
-                    {{sft_count['placeofworkships']}},
-                    {{env_count['parks']}}],
-
+                    data: [
+                        tsp_count['total'],
+                        mdc_count['total'],
+                        eco_count['conveniencestores'],
+                        edu_count['schools'] + edu_count['universities'],
+                        sft_count['placeofworkships'],
+                        env_count['parks']
+                    ],
                 }]
             };
 
@@ -312,13 +321,18 @@
                 type: 'bar',
                 data: bar_data,
                 options: {
-                    // scales: {
-                    //     y: {
-                    //         beginAtZero: true
-                    //     }
-                }
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '周邊設施數量統計'
+                        }
+                    }
+                },
             }
-        console.log({{tsp_count['MRTs']}})
         </script>
         <script>
             const barChart = new Chart(
@@ -327,10 +341,13 @@
             );
         </script>
     </div>
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
+
+    <!-- 直方圖：模型準確度 -->
+    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" //
             style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="line_accuracy_Chart" width="500" height="250"
+        <canvas id="line_accuracy_Chart" width="500" height="250" //
             style="display: block; width: 500px; height: 250px;"></canvas>
+
         <script>
             const line_accuracy_labels = [
                 '-3',
@@ -366,171 +383,11 @@
             };
 
         </script>
+
         <script>
             const line_accuracy_Chart = new Chart(
                 document.getElementById('line_accuracy_Chart'),
                 line_accuracy_config
-            );
-        </script>
-    </div>
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="radarChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
-        <script>
-            const radar_labels = [
-                '醫療設施',
-                '經濟指標',
-                '教育資源',
-                '公共安全',
-                '自然環境',
-                '交通運輸',
-            ];
-                // 
-            const radar_data = {
-                labels: radar_labels,
-                datasets: [{
-                    label: '該位置綜和指標',
-                    data: {{ values }}, 
-                    fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    pointBackgroundColor: 'rgb(255, 99, 132)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(255, 99, 132)'
-                }, {
-                    label: '該區域綜合指標',
-                    data: {{values2}},
-                    fill: true,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    pointBackgroundColor: 'rgb(54, 162, 235)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(54, 162, 235)'
-                }]
-            };
-
-            const radar_config = {
-                type: 'radar',
-                data: radar_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
-                        }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const radarChart = new Chart(
-                document.getElementById('radarChart'),
-                radar_config
-            );
-        </script>
-    </div>
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="line_history_Chart" width="500" height="250"
-            style="display: block; width: 500px; height: 250px;"></canvas>
-        <script>
-            const inputs = {
-                min: 0,
-                max: 100,
-                count: 10,
-                decimals: 2,
-                continuity: 1
-            };
-            const line_history_labels = [
-                '101年',
-                '102年',
-                '103年',
-                '104年',
-                '105年',
-                '106年',
-                '107年',
-                '108年',
-                '109年',
-                '110年',
-            ];
-
-            const line_history_data = {
-                labels: line_history_labels,
-                datasets: [{
-                    label: '該位置歷史成交價格',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 10, 5, 2, 20, 30, 45, 0, 0, 15],
-                }]
-            };
-
-            const line_history_config = {
-                type: 'line',
-                data: line_history_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
-                        }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const line_history_Chart = new Chart(
-                document.getElementById('line_history_Chart'),
-                line_history_config
-            );
-        </script>
-    </div>
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="doughnutChart" width="1000" height="500"
-            style="display: block; height: 250px; width: 500px;"></canvas>
-        <script>
-            const doughnut_labels = [
-                '高中含以下',
-                '學士',
-                '碩士/博士',
-            ];
-
-            const doughnut_data = {
-                labels: doughnut_labels,
-                datasets: [{
-                    label: [
-                        '高中含以下',
-                        '學士',
-                        '碩士/博士',
-                    ],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
-                    ],
-                    data: [20, 70, 10],
-                }]
-            };
-
-            const doughnut_config = {
-                type: 'doughnut',
-                data: doughnut_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
-                        }
-                    }
-                },
-            };
-
-        </script>
-        <script>
-            const doughnutChart = new Chart(
-                document.getElementById('doughnutChart'),
-                doughnut_config
             );
         </script>
 
