@@ -1,0 +1,10 @@
+./model/KEL/KEL_residuals.csv
+./model/NTPC/NTPC_residuals.csv
+./model/TPE/TPE_residuals.csv
+./model/TPE/district_data.csv
+./model/TPE/Min_max_data.csv
+./model/TPE/TPE_history_price.csv
+
+./model/KEL_model_features_clean.csv
+./model/TPE_model_features_clean.csv
+./model/NTPC_model_features_clean.csv
