@@ -132,7 +132,7 @@ def get_visualize_data(values, result):
         residuals = residuals.iloc[:,1].tolist()
         # 行政區歷史成交資訊
         history_price = pd.read_csv('./model/TPE/TPE_history_price.csv')
-        history_price = history_price.iloc[distt,2:11].tolist()
+        history_price = history_price.iloc[distt,2:12].tolist()
 
         return price, house_six_ind, dist_six_ind, residuals, history_price
 

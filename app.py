@@ -176,6 +176,9 @@ def get_form():
         house_lon=house_lon, 
         house_lat=house_lat, 
         conveniencestore=conveniencestores,
+        park=parks,
+        school=schools,
+        placeofworkship=placeofworkships,
         price=price,
         mdc_count = mdc_count,
         eco_count = eco_count,
@@ -184,7 +187,9 @@ def get_form():
         env_count = env_count,
         tsp_count = tsp_count,
         values=house_six_ind,
-        values2=dist_six_ind)
+        values2=dist_six_ind,
+        history_values=history_price,
+        residuals_values=residuals)
 
 # 數據分析頁
 @app.route('/analysis')
