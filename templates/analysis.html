@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 <!-- 頁面的標題 -->
-{% block title %}TEAM 2{% endblock %}
+{% block title %}--數據分析{% endblock %}
 
 <!-- 頁面的CSS -->
 {% block css %}
@@ -17,36 +17,6 @@
         width: 90vw;
     }
 
-    /* Nav CSS */
-    #mainNav {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1030;
-        border-bottom: 1px solid #dee2e6;
-        background-color: #fff;
-        font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    }
-
-    #mainNav .navbar-brand {
-        font-weight: 800;
-    }
-
-    #mainNav .navbar-toggler {
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 0.75rem;
-        text-transform: uppercase;
-    }
-
-    #mainNav .navbar-nav>li.nav-item>a.nav-link {
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.0625em;
-        text-transform: uppercase;
-    }
-
     @media (min-width: 992px) {
         #mainNav {
             border-bottom: 1px solid transparent;
@@ -59,7 +29,7 @@
 
         #mainNav .navbar-brand:focus,
         #mainNav .navbar-brand:hover {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgb(92, 90, 90);
         }
 
         #mainNav .navbar-nav>li.nav-item>a.nav-link {
@@ -68,49 +38,7 @@
 
         #mainNav .navbar-nav>li.nav-item>a.nav-link:focus,
         #mainNav .navbar-nav>li.nav-item>a.nav-link:hover {
-            color: rgba(255, 255, 255, 0.8);
-        }
-    }
-
-    @media (min-width: 992px) {
-        #mainNav {
-            transition: background-color 0.2s;
-            /* Force Hardware Acceleration in WebKit */
-            transform: translate3d(0, 0, 0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-        }
-
-        #mainNav.is-fixed {
-            /* when the user scrolls down, we hide the header right above the viewport */
-            position: fixed;
-            top: -83px;
-            transition: transform 0.2s;
-            border-bottom: 1px solid white;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-
-        #mainNav.is-fixed .navbar-brand {
-            color: #212529;
-        }
-
-        #mainNav.is-fixed .navbar-brand:focus,
-        #mainNav.is-fixed .navbar-brand:hover {
-            color: #0085A1;
-        }
-
-        #mainNav.is-fixed .navbar-nav>li.nav-item>a {
-            color: #212529;
-        }
-
-        #mainNav.is-fixed .navbar-nav>li.nav-item>a:focus,
-        #mainNav.is-fixed .navbar-nav>li.nav-item>a:hover {
-            color: #0085A1;
-        }
-
-        #mainNav.is-visible {
-            /* if the user changes the scrolling direction, we show the header */
-            transform: translate3d(0, 100%, 0);
+            color: rgb(92, 90, 90);
         }
     }
 
@@ -343,9 +271,9 @@
     </div>
 
     <!-- 直方圖：模型準確度 -->
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" //
+    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
             style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="line_accuracy_Chart" width="500" height="250" //
+        <canvas id="line_accuracy_Chart" width="500" height="250"
             style="display: block; width: 500px; height: 250px;"></canvas>
 
         <script>
