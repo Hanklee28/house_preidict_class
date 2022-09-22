@@ -183,7 +183,7 @@
 </script>
 
 <!-- 圖表區 -->
-
+<div>{{history_price}}</div>
 <div class="container">
     <!-- 長條圖：周邊設施數量統計 -->
     <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
@@ -270,37 +270,43 @@
         </script>
     </div>
 
-    <!-- 直方圖：模型準確度 -->
+    <!-- 直方圖：歷史成交價格 -->
     <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
             style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="line_accuracy_Chart" width="500" height="250"
+        <canvas id="line_history_Chart" width="500" height="250"
             style="display: block; width: 500px; height: 250px;"></canvas>
 
         <script>
-            const line_accuracy_labels = [
-                '-3',
-                '-2',
-                '0',
-                '1',
-                '2',
-                '3',
+            // 估價行政區歷史成交價格
+            history_price = {{ history_price | tojson }}
+
+            const line_history_labels = [
+                '101年',
+                '102年',
+                '103年',
+                '104年',
+                '105年',
+                '106年',
+                '107年',
+                '108年',
+                '109年',
+                '110年',
             ];
 
-            const line_accuracy_data = {
-                labels: line_accuracy_labels,
+            const line_history_data = {
+                labels: line_history_labels,
                 datasets: [{
-                    label: '模型準確度',
+                    label: '行政區歷史成交價格',
                     backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(255, 99, 132)',
-                    data: [0, 2, 15, 0, 20, 30, 45, 30, 20, 15, 5, 0],
+                    data: history_price,
                     tension: 0.1
-                    //tension 線圖張力
                 }]
             };
 
-            const line_accuracy_config = {
+            const line_history_config = {
                 type: 'line',
-                data: line_accuracy_data,
+                data: line_history_data,
                 options: {
                     elements: {
                         line: {
@@ -313,12 +319,77 @@
         </script>
 
         <script>
-            const line_accuracy_Chart = new Chart(
-                document.getElementById('line_accuracy_Chart'),
-                line_accuracy_config
+            const line_history_Chart = new Chart(
+                document.getElementById('line_history_Chart'),
+                line_history_config
             );
         </script>
 
     </div>
+
+    <!-- 雷達圖： -->
+    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
+            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+        <canvas id="radarChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+
+        <script>
+            const radar_labels = [
+                '醫療設施',
+                '經濟指標',
+                '教育資源',
+                '公共安全',
+                '自然環境',
+                '交通運輸',
+            ];
+
+            const radar_data = {
+                labels: radar_labels,
+                datasets: [{
+                    label: '該位置綜和指標',
+                    data: [65, 59, 90, 81, 56, 55],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }, {
+                    label: '該區域綜合指標',
+                    data: [59, 90, 81, 56, 55, 61],
+                    fill: true,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    pointBackgroundColor: 'rgb(54, 162, 235)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                }]
+            };
+
+            const radar_config = {
+                type: 'radar',
+                data: radar_data,
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    }
+                },
+            };
+
+        </script>
+
+        <script>
+            const radarChart = new Chart(
+                document.getElementById('radarChart'),
+                radar_config
+            );
+        </script>
+
+    </div>
+
+
 </div>
 {% endblock %}

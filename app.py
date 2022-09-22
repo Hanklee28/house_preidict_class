@@ -23,6 +23,9 @@ eco_count = {'conveniencestores':26}
 edu_count = {'schools':4, 'universities':1}
 sft_count = {'placeofworkships':3}
 env_count = {'parks':5}
+history_price = [201218.67032967036, 238198.49326599325, 244036.2015503876, 228572.0652680653, 237989.80201342283, 230623.75914634147, 236894.67889908256, 225011.86616161617, 234032.10738255037]
+house_six_ind = []
+dist_six_ind = []
 values = {}
 values2 = {}
 
@@ -191,6 +194,9 @@ def get_form():
         price, house_six_ind, dist_six_ind, residuals, history_price = get_visualize_data(request.values, result)
 
         return render_template('analysis.html', 
+        house_six_ind = house_six_ind, 
+        dist_six_ind = house_six_ind, 
+        history_price=history_price,
         hospital=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
@@ -209,10 +215,13 @@ def get_form():
 @app.route('/analysis')
 def analysis():
     return render_template("analysis.html", 
+        house_six_ind = house_six_ind, 
+        dist_six_ind = house_six_ind, 
         hospital=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
         conveniencestore=conveniencestores,
+        history_price=history_price, 
         price=price,
         tsp_count = tsp_count, 
         mdc_count = mdc_count, 
