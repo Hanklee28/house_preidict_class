@@ -283,7 +283,7 @@
 
             const bar_labels = [
                 '交通運輸設施',
-                '醫療設施',
+                '大型醫院',
                 '超商',
                 '學校',
                 '宮廟',
@@ -312,12 +312,18 @@
                     ],
                     borderWidth: 3,
                     data: [
-                        tsp_count['total'],
-                        mdc_count['total'],
-                        eco_count['conveniencestores'],
-                        edu_count['schools'] + edu_count['universities'],
-                        sft_count['placeofworkships'],
-                        env_count['parks']
+                        // tsp_count['total'],
+                        // mdc_count['total'],
+                        // eco_count['conveniencestores'],
+                        // edu_count['schools'] + edu_count['universities'],
+                        // sft_count['placeofworkships'],
+                        // env_count['parks']
+                        {{tsp_count['MRTs']}},
+                        {{mdc_count['hospitals']}},
+                        {{eco_count['conveniencestores']}},
+                        {{edu_count['schools']}},
+                        {{sft_count['placeofworkships']}},
+                        {{env_count['parks']}}
                     ],
                 }]
             };
