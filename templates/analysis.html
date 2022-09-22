@@ -50,9 +50,9 @@
     }
 
     .chart-container {
-        width: 500px;
-        margin-left: 10px;
-        margin-right: 10px;
+        /* height: 50%; */
+        width: 80%;
+        margin: 10vh;
     }
 
     .container {
@@ -94,94 +94,20 @@
     var house_lon = {{ house_lon | tojson }};
     var house_lat = {{ house_lat | tojson }};
 
-    // 地圖圖例
-    // const legend = L.control.Legend({
-    //         position: "bottomleft",
-    //         collapsed: false,
-    //         symbolWidth: 24,
-    //         opacity: 1,
-    //         column: 2,
-    //         legends: [{
-    //             label: "Marker1",
-    //             type: "image",
-    //             url: "marker/marker-red.png",
-    //         }, {
-    //             label: "Marker2",
-    //             type: "image",
-    //             url: "marker/purple.png"
-    //         }, {
-    //             label: "Marker",
-    //             type: "circle",
-    //             radius: 6,
-    //             color: "blue",
-    //             fillColor: "#FF0000",
-    //             fillOpacity: 0.6,
-    //             weight: 2,
-    //             layers: [marker],
-    //             inactive: true,
-    //         }, {
-    //             label: "Real line",
-    //             type: "polygon",
-    //             color: "#FF0000",
-    //             fillColor: "#FF0000",
-    //             weight: 2,
-    //             layers: polygon
-    //         }, {
-    //             label: "Dotted line",
-    //             type: "polyline",
-    //             color: "#0000FF",
-    //             fillColor: "#0000FF",
-    //             dashArray: [5, 5],
-    //             weight: 2
-    //         }, {
-    //             label: "Rectangle",
-    //             type: "rectangle",
-    //             color: "#FF0000",
-    //             fillColor: "#FF0000",
-    //             weight: 2
-    //         }, {
-    //             label: "Square",
-    //             type: "polygon",
-    //             sides: 4,
-    //             color: "#FF0000",
-    //             fillColor: "#FF0000",
-    //             weight: 2
-    //         }, {
-    //             label: "Regular triangle",
-    //             type: "polygon",
-    //             sides: 3,
-    //             color: "#FF0000",
-    //             fillColor: "#FF0000",
-    //             weight: 2
-    //         }, {
-    //             label: "Regular polygon",
-    //             type: "polygon",
-    //             sides: 5,
-    //             color: "#FF0000",
-    //             fillColor: "#FF0000",
-    //             weight: 2
-    //         }]
-    //     })
-    //         .addTo(map);
-
-    // 醫院的經緯度
-    var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
-    var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
-
     // 超商的經緯度
-    var conveniencestores = {{ conveniencestore | tojson  }}
-    
+    var conveniencestores = {{ conveniencestores | tojson  }}
+
     // 公園經緯度
-    var parks ={{ park | tojson }}
-    
+    var parks = {{ parks | tojson }}
+
     // 學校經緯度
-    var schools ={{ school | tojson }}
+    var schools = {{ schools | tojson }}
 
     // 宮廟經緯度  
-    var placeofworkships ={{ placeofworkship | tojson }} 
+    var placeofworkships = {{ placeofworkships | tojson }}
     // 醫院的經緯度，[0]:經度, [1]:緯度
-    var h_lon = {{ hospital['features'][0]['geometry']['coordinates'][0] | tojson}}
-    var h_lat = {{ hospital['features'][0]['geometry']['coordinates'][1] | tojson}}
+    var h_lon = {{ hospitals['features'][0]['geometry']['coordinates'][0] | tojson}}
+    var h_lat = {{ hospitals['features'][0]['geometry']['coordinates'][1] | tojson}}
 
     // 設定地圖中心與放大比例
     var map = L.map('map', {
@@ -212,20 +138,20 @@
         iconSize: [30,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
-     // 公園圖示
+    // 公園圖示
     var parkIcon = L.icon({
         iconUrl: '../static/imgs/park.png',
         iconSize: [30,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
-     // 學校圖示
-     var schoolIcon = L.icon({
+    // 學校圖示
+    var schoolIcon = L.icon({
         iconUrl: '../static/imgs/school.png',
         iconSize: [30,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
-     // 宮廟圖示
-     var templeIcon = L.icon({
+    // 宮廟圖示
+    var templeIcon = L.icon({
         iconUrl: '../static/imgs/temple.png',
         iconSize: [30,], // size of the icon
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
@@ -264,10 +190,10 @@
     //將 layerGroup 放到 map 當中
     layerGroup.addTo(map);
 
-     // 公園圖資
-     for (let p of parks['features']) {
+    // 公園圖資
+    for (let p of parks['features']) {
         // console.log(c['geometry']['coordinates'][0])
-         let marker = L.marker([p['geometry']['coordinates'][1], p['geometry']['coordinates'][0]], { icon: parkIcon })
+        let marker = L.marker([p['geometry']['coordinates'][1], p['geometry']['coordinates'][0]], { icon: parkIcon })
             .bindPopup('公園')
         // .openPopup();
 
@@ -281,7 +207,7 @@
     // 學校圖資
     for (let s of schools['features']) {
         // console.log(c['geometry']['coordinates'][0])
-         let marker = L.marker([s['geometry']['coordinates'][1], s['geometry']['coordinates'][0]], { icon: schoolIcon })
+        let marker = L.marker([s['geometry']['coordinates'][1], s['geometry']['coordinates'][0]], { icon: schoolIcon })
             .bindPopup('學校')
         // .openPopup();
 
@@ -295,7 +221,7 @@
     // 宮廟圖資
     for (let pw of placeofworkships['features']) {
         // console.log(c['geometry']['coordinates'][0])
-         let marker = L.marker([pw['geometry']['coordinates'][1], pw['geometry']['coordinates'][0]], { icon: templeIcon })
+        let marker = L.marker([pw['geometry']['coordinates'][1], pw['geometry']['coordinates'][0]], { icon: templeIcon })
             .bindPopup('宮廟')
         // .openPopup();
 
@@ -306,7 +232,7 @@
     //迴圈執行完畢後，將 arrLayers 放到 layerGroup 當中
     layerGroup = L.layerGroup(arrLayers);
 
-    
+
 
     //將 layerGroup 放到 map 當中
     layerGroup.addTo(map);
@@ -333,12 +259,13 @@
 </script>
 
 <!-- 圖表區 -->
-<div>{{history_price}}</div>
 <div class="container">
+    <!-- 預設圖表字體 -->
+    <script>Chart.defaults.font.size = 18;</script>
+
     <!-- 長條圖：周邊設施數量統計 -->
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="barChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
+    <div class="chart-container">
+        <canvas id="barChart"></canvas>
         <script>
             // 交通運輸設施：tsp_count['total']
             // 醫療設施：mdc_count['total']
@@ -383,7 +310,7 @@
                         'rgb(54, 162, 235)',
                         'rgb(153, 102, 255)',
                     ],
-                    borderWidth: 1,
+                    borderWidth: 3,
                     data: [
                         tsp_count['total'],
                         mdc_count['total'],
@@ -406,11 +333,15 @@
                         },
                         title: {
                             display: true,
-                            text: '周邊設施數量統計'
-                        }
+                            text: '周邊設施數量統計',
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
+                        },
                     }
                 },
-            }
+            };
         </script>
         <script>
             const barChart = new Chart(
@@ -420,28 +351,14 @@
         </script>
     </div>
 
-    <!-- 直方圖：歷史成交價格 -->
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="line_history_Chart" width="500" height="250"
-            style="display: block; width: 500px; height: 250px;"></canvas>
-
+    <!-- 折線圖：歷史成交價格 -->
+    <div class="chart-container">
+        <canvas id="line_history_Chart"></canvas>
         <script>
             // 估價行政區歷史成交價格
-            history_price = {{ history_price | tojson }}
+            history_price = {{ history_price | tojson }};
 
-            const line_history_labels = [
-                '101年',
-                '102年',
-                '103年',
-                '104年',
-                '105年',
-                '106年',
-                '107年',
-                '108年',
-                '109年',
-                '110年',
-            ];
+            const line_history_labels = ['101年', '102年', '103年', '104年', '105年', '106年', '107年', '108年', '109年', '110年',];
 
             const line_history_data = {
                 labels: line_history_labels,
@@ -460,11 +377,26 @@
                 options: {
                     elements: {
                         line: {
-                            borderWidth: 3
+                            borderWidth: 5
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '行政區歷史成交價格',
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
+                        },
+
                     }
-                },
+                }
             };
+
 
         </script>
 
@@ -478,11 +410,11 @@
     </div>
 
     <!-- 雷達圖： -->
-    <div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1"
-            style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
-        <canvas id="radarChart" width="500" height="250" style="display: block; width: 500px; height: 250px;"></canvas>
-
+    <div class="chart-container">
+        <canvas id="radarChart" width="400" height="400"></canvas>
         <script>
+            house_six_ind = {{ house_six_ind | tojson }};
+            dist_six_ind = {{ dist_six_ind | tojson }};
             const radar_labels = [
                 '醫療設施',
                 '經濟指標',
@@ -494,8 +426,8 @@
             const radar_data = {
                 labels: radar_labels,
                 datasets: [{
-                    label: '該位置綜和指標',
-                    data: [65, 59, 90, 81, 56, 55],
+                    label: '輸入地址綜和指標',
+                    data: house_six_ind,
                     fill: true,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
@@ -504,8 +436,8 @@
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgb(255, 99, 132)'
                 }, {
-                    label: '該區域綜合指標',
-                    data: [59, 90, 81, 56, 55, 61],
+                    label: '行政區綜合指標',
+                    data: dist_six_ind,
                     fill: true,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
@@ -523,6 +455,19 @@
                     elements: {
                         line: {
                             borderWidth: 3
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '區域指標雷達圖',
+                            padding: {
+                                top: 10,
+                                bottom: 30
+                            }
                         }
                     }
                 },

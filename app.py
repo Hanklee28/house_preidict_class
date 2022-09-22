@@ -23,11 +23,15 @@ eco_count = {'conveniencestores':26}
 edu_count = {'schools':4, 'universities':1}
 sft_count = {'placeofworkships':3}
 env_count = {'parks':5}
-history_price = [201218.67032967036, 238198.49326599325, 244036.2015503876, 228572.0652680653, 237989.80201342283, 230623.75914634147, 236894.67889908256, 225011.86616161617, 234032.10738255037]
-house_six_ind = []
-dist_six_ind = []
+history_price = [201218.67032967036, 238198.49326599325, 244036.2015503876, 228572.0652680653, 237989.80201342283, 230623.75914634147, 236894.67889908256, 225011.86616161617, 234032.10738255037, 255527.8562992126]
+house_six_ind = [7.569812157161003, 12.41045351575365, 5.216451566090331, 2.0993216684619678, 4.814081897906177, 25.060253955565447]
+dist_six_ind = [5.570392448188305, 5.659833053416503, 7.326122624464884, 5.076397578103819, 5.869877636768275, 6.7098581937439725]
+placeofworkships = []
+parks = {}
+schools = {}
 values = {}
 values2 = {}
+
 
 
 
@@ -195,15 +199,15 @@ def get_form():
 
         return render_template('analysis.html', 
         house_six_ind = house_six_ind, 
-        dist_six_ind = house_six_ind, 
+        dist_six_ind = dist_six_ind, 
         history_price=history_price,
-        hospital=hospitals, 
+        hospitals=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
-        conveniencestore=conveniencestores,
-        park=parks,
-        school=schools,
-        placeofworkship=placeofworkships,
+        conveniencestores=conveniencestores,
+        parks=parks,
+        schools=schools,
+        placeofworkships=placeofworkships,
         price=price,
         mdc_count = mdc_count,
         eco_count = eco_count,
@@ -219,13 +223,14 @@ def get_form():
 # 數據分析頁
 @app.route('/analysis')
 def analysis():
-    return render_template("analysis.html", 
+    return render_template("analysis.html",
         house_six_ind = house_six_ind, 
-        dist_six_ind = house_six_ind, 
-        hospital=hospitals, 
+        dist_six_ind = dist_six_ind, 
+        placeofworkships = placeofworkships, 
+        hospitals=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
-        conveniencestore=conveniencestores,
+        conveniencestores=conveniencestores,
         history_price=history_price, 
         price=price,
         tsp_count = tsp_count, 
@@ -234,6 +239,8 @@ def analysis():
         edu_count = edu_count, 
         sft_count = sft_count, 
         env_count = env_count, 
+        parks = parks, 
+        schools=schools,
         )
 
 # 組員介紹頁
